@@ -3,7 +3,7 @@
   "id": "poufdlc-visual",
   "version": "${version}",
   "name": "PoufDLC Visual",
-  "description": "Client visuals: HUD watermark and GUI corner radius. No combat modules.",
+  "description": "Client visuals + modules. Right Shift menu.",
   "authors": ["Tg @PoufDLCclient"],
   "contact": {},
   "license": "MIT",

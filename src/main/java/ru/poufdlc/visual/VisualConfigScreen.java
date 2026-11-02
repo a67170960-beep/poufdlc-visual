@@ -17,7 +17,8 @@ public class VisualConfigScreen extends Screen {
     @Override
     protected void init() {
         int cx = this.width / 2;
-        int y = this.height / 2 - 40;
+        int y = 40;
+        int gap = 24;
 
         this.addDrawableChild(new SliderWidget(cx - 100, y, 200, 20,
                 Text.literal("Corner radius: " + (int) PoufVisualClient.cornerRadius),
@@ -32,27 +33,44 @@ public class VisualConfigScreen extends Screen {
                 PoufVisualClient.cornerRadius = (float) (this.value * 24.0);
             }
         });
+        y += gap;
 
-        this.addDrawableChild(ButtonWidget.builder(
-                Text.literal(PoufVisualClient.hudEnabled ? "HUD: ON" : "HUD: OFF"),
-                b -> {
-                    PoufVisualClient.hudEnabled = !PoufVisualClient.hudEnabled;
-                    b.setMessage(Text.literal(PoufVisualClient.hudEnabled ? "HUD: ON" : "HUD: OFF"));
-                }
-        ).dimensions(cx - 100, y + 28, 200, 20).build());
+        this.addDrawableChild(toggleButton(cx, y, "HUD", () -> PoufVisualClient.hudEnabled, v -> PoufVisualClient.hudEnabled = v));
+        y += gap;
+        this.addDrawableChild(toggleButton(cx, y, "Fly", () -> PoufVisualClient.flyEnabled, v -> PoufVisualClient.flyEnabled = v));
+        y += gap;
+        this.addDrawableChild(toggleButton(cx, y, "Speed", () -> PoufVisualClient.speedEnabled, v -> PoufVisualClient.speedEnabled = v));
+        y += gap;
+        this.addDrawableChild(toggleButton(cx, y, "FullBright", () -> PoufVisualClient.fullBrightEnabled, v -> PoufVisualClient.fullBrightEnabled = v));
+        y += gap;
+        this.addDrawableChild(toggleButton(cx, y, "NoFall", () -> PoufVisualClient.noFallEnabled, v -> PoufVisualClient.noFallEnabled = v));
+        y += gap;
+        this.addDrawableChild(toggleButton(cx, y, "KillAura", () -> PoufVisualClient.killAuraEnabled, v -> PoufVisualClient.killAuraEnabled = v));
+        y += gap + 8;
 
         this.addDrawableChild(ButtonWidget.builder(Text.literal("Done"), b -> {
             if (this.client != null) this.client.setScreen(parent);
-        }).dimensions(cx - 100, y + 56, 200, 20).build());
+        }).dimensions(cx - 100, y, 200, 20).build());
+    }
+
+    private ButtonWidget toggleButton(int cx, int y, String name, java.util.function.BooleanSupplier getter, java.util.function.Consumer<Boolean> setter) {
+        return ButtonWidget.builder(
+                Text.literal(name + ": " + (getter.getAsBoolean() ? "ON" : "OFF")),
+                b -> {
+                    boolean next = !getter.getAsBoolean();
+                    setter.accept(next);
+                    b.setMessage(Text.literal(name + ": " + (next ? "ON" : "OFF")));
+                }
+        ).dimensions(cx - 100, y, 200, 20).build();
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 20, 0xFFE8E0FF);
+        context.drawCenteredTextWithShadow(this.textRenderer, this.title, this.width / 2, 12, 0xFFE8E0FF);
         context.drawCenteredTextWithShadow(this.textRenderer,
-                Text.literal("Visual only. No combat modules."),
-                this.width / 2, 36, 0xFFAAAAAA);
+                Text.literal("Right Shift — меню"),
+                this.width / 2, 26, 0xFFAAAAAA);
     }
 
     @Override
