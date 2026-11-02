@@ -63,14 +63,14 @@ public class PoufVisualClient implements ClientModInitializer {
         ClientPlayerEntity player = client.player;
         if (player == null) return;
 
-        applyFly(player);
+        applyFly(client, player);
         applySpeed(player);
         applyFullBright(player);
         applyNoFall(player);
         applyKillAura(client);
     }
 
-    private static void applyFly(ClientPlayerEntity player) {
+    private static void applyFly(MinecraftClient client, ClientPlayerEntity player) {
         if (!flyEnabled) {
             player.getAbilities().flying = false;
             return;
@@ -80,8 +80,8 @@ public class PoufVisualClient implements ClientModInitializer {
 
         Vec3d velocity = player.getVelocity();
         double motionY = 0.0;
-        if (player.input.jumping) motionY = FLY_SPEED * 0.5;
-        if (player.input.sneaking) motionY = -FLY_SPEED * 0.5;
+        if (client.options.jumpKey.isPressed()) motionY = FLY_SPEED * 0.5;
+        if (client.options.sneakKey.isPressed()) motionY = -FLY_SPEED * 0.5;
 
         player.setVelocity(velocity.x, motionY, velocity.z);
         player.velocityModified = true;
@@ -89,7 +89,7 @@ public class PoufVisualClient implements ClientModInitializer {
 
     private static void applySpeed(ClientPlayerEntity player) {
         if (!speedEnabled || !player.isOnGround()) return;
-        if (player.forwardSpeed == 0 && player.sidewaysSpeed == 0) return;
+        if (player.input.movementForward == 0 && player.input.movementSideways == 0) return;
 
         Vec3d velocity = player.getVelocity();
         double yaw = Math.toRadians(player.getYaw());
@@ -98,8 +98,8 @@ public class PoufVisualClient implements ClientModInitializer {
         double mx = -Math.sin(yaw) * speed;
         double mz = Math.cos(yaw) * speed;
 
-        if (player.sidewaysSpeed != 0) {
-            double sideYaw = yaw + (player.sidewaysSpeed > 0 ? -Math.PI / 2 : Math.PI / 2);
+        if (player.input.movementSideways != 0) {
+            double sideYaw = yaw + (player.input.movementSideways > 0 ? -Math.PI / 2 : Math.PI / 2);
             mx += -Math.sin(sideYaw) * speed * 0.7;
             mz += Math.cos(sideYaw) * speed * 0.7;
         }
