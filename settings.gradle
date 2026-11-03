@@ -5,4 +5,4 @@ pluginManagement {
         mavenCentral()
     }
 }
-rootProject.name = 'poufdlc-visual'
+rootProject.name = 'poufdlc'

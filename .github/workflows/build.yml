@@ -1,4 +1,4 @@
-name: Build Visual Mod
+name: Build PoufDLC
 on:
   push:
     branches: [main, master]
@@ -19,7 +19,7 @@ jobs:
       - run: chmod +x gradlew && ./gradlew build --no-daemon --stacktrace
       - uses: actions/upload-artifact@v4
         with:
-          name: poufdlc-visual-1.21.4
+          name: poufdlc-1.21.4
           path: |
             build/libs/*.jar
             !build/libs/*-sources.jar

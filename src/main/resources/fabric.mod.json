@@ -1,15 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "poufdlc-visual",
+  "id": "poufdlc",
   "version": "${version}",
-  "name": "PoufDLC Visual",
-  "description": "Client visuals + modules. Right Shift menu.",
-  "authors": ["Tg @PoufDLCclient"],
-  "contact": {},
+  "name": "PoufDLC",
+  "description": "PoufDLC client 1.21.4 — combat + visuals, Sloth-oriented rotations",
+  "authors": ["PoufDLC"],
   "license": "MIT",
   "environment": "client",
   "entrypoints": {
-    "client": ["ru.poufdlc.visual.PoufVisualClient"]
+    "client": ["ru.poufdlc.PoufClient"]
   },
   "depends": {
     "fabricloader": ">=0.16.10",
