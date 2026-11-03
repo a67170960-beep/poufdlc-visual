@@ -1,22 +1,19 @@
 package ru.poufdlc.util;
 
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.AxeItem;
 import net.minecraft.item.Items;
 import net.minecraft.item.MaceItem;
 import net.minecraft.item.TridentItem;
 
-/** Port of SystemDLC CritChecks — fall-based crit window. */
 public final class CritUtil {
     private CritUtil() {}
 
     public static boolean blockingState(ClientPlayerEntity p) {
         return p.isTouchingWater() || p.isInLava() || p.isClimbing()
-                || p.hasVehicle() || p.isFallFlying() || p.isSwimming();
+                || p.hasVehicle() || p.isGliding() || p.isSwimming();
     }
 
-    /** velocity.y < -0.01 and not grounded → crit window */
     public static boolean inCritWindow(ClientPlayerEntity p) {
         if (p == null || p.isOnGround() || blockingState(p)) return false;
         return p.getVelocity().y < -0.01;
