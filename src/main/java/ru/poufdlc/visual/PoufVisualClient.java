@@ -71,6 +71,7 @@ public class PoufVisualClient implements ClientModInitializer {
         applyFullBright(player);
         applyNoFall(player);
         applyKillAura(client);
+        AutoMace.tick(client);
     }
 
     private static void applyFly(MinecraftClient client, ClientPlayerEntity player) {
