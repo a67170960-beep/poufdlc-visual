@@ -60,6 +60,7 @@ public class PoufVisualClient implements ClientModInitializer {
         });
 
         HudRenderCallback.EVENT.register(PoufVisualClient::renderHud);
+        EspRenderer.register();
     }
 
     private static void applyModules(MinecraftClient client) {
@@ -72,6 +73,7 @@ public class PoufVisualClient implements ClientModInitializer {
         applyNoFall(player);
         applyKillAura(client);
         AutoMace.tick(client);
+        AutoAim.tick(client);
     }
 
     private static void applyFly(MinecraftClient client, ClientPlayerEntity player) {
@@ -215,6 +217,7 @@ public class PoufVisualClient implements ClientModInitializer {
         fillRounded(context, x, y, x + w, y + h, (int) Math.max(1, cornerRadius / 2), bg);
         context.drawBorder(x, y, w, h, border);
         context.drawTextWithShadow(mc.textRenderer, text, x + pad, y + pad, 0xFFE8E0FF);
+        EspRenderer.renderHudOverlay(context);
     }
 
     static void fillRounded(DrawContext ctx, int x1, int y1, int x2, int y2, int r, int color) {
