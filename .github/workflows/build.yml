@@ -1,4 +1,4 @@
-name: Build PoufDLC
+name: Build Pouf Overlay
 on:
   push:
     branches: [main, master]
@@ -8,19 +8,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - uses: nttld/setup-ndk@v1
+        id: setup-ndk
         with:
-          distribution: temurin
-          java-version: '21'
-          cache: gradle
-      - uses: gradle/actions/setup-gradle@v4
-        with:
-          validate-wrappers: false
-      - run: chmod +x gradlew && ./gradlew build --no-daemon --stacktrace
+          ndk-version: r26d
+          add-to-path: true
+      - name: Build
+        env:
+          NDK: ${{ steps.setup-ndk.outputs.ndk-path }}
+        run: |
+          set -e
+          cd zene/Jni
+          \( NDK/ndk-build -j \)(nproc) NDK_PROJECT_PATH=. NDK_APPLICATION_MK=Application.mk
+          ls -la libs/arm64-v8a/ || true
+          find .. -name "libfreecamk.so" -o -name "inj"
       - uses: actions/upload-artifact@v4
         with:
-          name: poufdlc-1.21.4
+          name: poufdlc-android-arm64
           path: |
-            build/libs/*.jar
-            !build/libs/*-sources.jar
-            !build/libs/*-dev.jar
+            zene/Jni/libs/arm64-v8a/*
+            zene/libs/arm64-v8a/*
